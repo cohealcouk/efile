@@ -15,6 +15,7 @@ export interface ArticleFrontmatter {
   rating: number;
   torque?: string;
   rpm?: string;
+  power?: string;
   vibration?: string;
   suction?: string;
   noise?: string;
