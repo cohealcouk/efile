@@ -1,38 +1,7 @@
+import { getAllArticles } from '@/lib/mdx';
+
 export default function ArticlesSection() {
-  const articles = [
-    {
-      title: 'Saeyang Marathon 3 Champion Review',
-      excerpt: 'Comprehensive technical analysis of the industry standard e-file with torque safety and vibration control.',
-      category: 'E-File Review',
-      date: '2024-02-24',
-      readTime: '8 min',
-      slug: 'saeyang-marathon-3-champion'
-    },
-    {
-      title: 'Saeyang H35LSP vs SH37LN Comparison',
-      excerpt: 'Head-to-head technical comparison of Saeyang handpieces with detailed performance metrics.',
-      category: 'Comparison',
-      date: '2024-02-23',
-      readTime: '6 min',
-      slug: 'saeyang-h35lsp-vs-sh37ln'
-    },
-    {
-      title: 'Saeyang Cyclone Vac Podiatry Review',
-      excerpt: 'Professional dust extractor analysis with suction power and noise level measurements.',
-      category: 'Equipment Review',
-      date: '2024-02-22',
-      readTime: '7 min',
-      slug: 'saeyang-cyclone-vac'
-    },
-    {
-      title: 'EXO Runner Up Technical Review',
-      excerpt: 'Budget-friendly e-file analysis with torque specifications and clinical suitability assessment.',
-      category: 'E-File Review',
-      date: '2024-02-21',
-      readTime: '5 min',
-      slug: 'exo-runner-up'
-    }
-  ];
+  const articles = getAllArticles();
 
   return (
     <section className="py-16 bg-slate-50">
@@ -52,24 +21,55 @@ export default function ArticlesSection() {
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-sm font-medium text-blue-900 bg-blue-50 px-2 py-1 rounded">
-                    {article.category}
+                    {article.frontmatter.brand}
                   </span>
-                  <div className="flex items-center text-sm text-slate-500">
-                    <span>{article.readTime}</span>
+                  <div className="flex items-center">
+                    <span className="text-yellow-500">★</span>
+                    <span className="ml-1 font-semibold">{article.frontmatter.rating}</span>
                   </div>
                 </div>
                 
                 <h3 className="text-xl font-semibold text-slate-900 mb-2">
-                  {article.title}
+                  {article.frontmatter.title}
                 </h3>
                 
                 <p className="text-slate-600 mb-4">
-                  {article.excerpt}
+                  {article.frontmatter.description}
                 </p>
+                
+                <div className="flex items-center justify-between mb-4">
+                  <div className="text-sm text-slate-500">
+                    <span>By {article.frontmatter.reviewer}</span>
+                  </div>
+                  <div className="text-sm font-medium text-blue-900">
+                    £{article.frontmatter.price}
+                  </div>
+                </div>
+
+                {article.frontmatter.torque && (
+                  <div className="flex items-center justify-between text-sm mb-2">
+                    <span className="text-slate-600">Torque:</span>
+                    <span className="font-medium">{article.frontmatter.torque}</span>
+                  </div>
+                )}
+
+                {article.frontmatter.rpm && (
+                  <div className="flex items-center justify-between text-sm mb-2">
+                    <span className="text-slate-600">RPM:</span>
+                    <span className="font-medium">{article.frontmatter.rpm}</span>
+                  </div>
+                )}
+
+                {article.frontmatter.suction && (
+                  <div className="flex items-center justify-between text-sm mb-2">
+                    <span className="text-slate-600">Suction:</span>
+                    <span className="font-medium">{article.frontmatter.suction}</span>
+                  </div>
+                )}
                 
                 <div className="flex items-center justify-between">
                   <time className="text-sm text-slate-500">
-                    {new Date(article.date).toLocaleDateString('en-GB', {
+                    {new Date(article.frontmatter.date).toLocaleDateString('en-GB', {
                       year: 'numeric',
                       month: 'long',
                       day: 'numeric'
