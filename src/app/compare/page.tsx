@@ -71,7 +71,7 @@ export default function ComparePage() {
     {
       name: 'Saeyang Marathon Cyclone Vac',
       category: 'E-File with Dust Extractor',
-      rating: 4.3,
+      rating: 4.9,
       torque: '4.2 Ncm',
       rpm: '28,000',
       power: '45W',
@@ -208,7 +208,11 @@ export default function ComparePage() {
                     <td className="text-center py-3 px-4">
                       <div className="flex items-center justify-center">
                         <span className="text-yellow-500">★</span>
-                        <span className="ml-1 font-semibold">{product.rating}</span>
+                        <span className={`ml-1 font-semibold ${
+                          product.rating >= 4.8 ? 'text-green-600' : 
+                          product.rating >= 4.5 ? 'text-blue-600' : 
+                          'text-slate-600'
+                        }`}>{product.rating}</span>
                       </div>
                     </td>
                     <td className="text-center py-3 px-4">
@@ -363,7 +367,8 @@ export default function ComparePage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProducts.map((product, index) => (
             <div key={index} className="bg-white rounded-lg shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
-              <div className="p-6">
+              {/* Header */}
+              <div className="p-6 border-b border-slate-100">
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-sm font-medium text-blue-900 bg-blue-50 px-2 py-1 rounded">
                     {product.category}
@@ -385,51 +390,80 @@ export default function ComparePage() {
                 <h3 className="text-lg font-semibold text-slate-900 mb-2">
                   {product.name}
                 </h3>
+              </div>
 
-                <div className="space-y-2 mb-4">
-                  {product.torque && (
-                    <div className="flex justify-between text-sm">
-                      <span className="text-slate-600">Torque:</span>
-                      <span className="font-medium">{product.torque}</span>
-                    </div>
-                  )}
-                  {product.rpm && (
-                    <div className="flex justify-between text-sm">
-                      <span className="text-slate-600">RPM:</span>
-                      <span className="font-medium">{product.rpm}</span>
-                    </div>
-                  )}
-                  {product.power && (
-                    <div className="flex justify-between text-sm">
-                      <span className="text-slate-600">Power:</span>
-                      <span className="font-medium">{product.power}</span>
-                    </div>
-                  )}
-                  {product.suction && (
-                    <div className="flex justify-between text-sm">
-                      <span className="text-slate-600">Suction:</span>
-                      <span className="font-medium">{product.suction}</span>
-                    </div>
-                  )}
-                  {product.noise && (
-                    <div className="flex justify-between text-sm">
-                      <span className="text-slate-600">Noise:</span>
-                      <span className="font-medium">{product.noise}</span>
-                    </div>
-                  )}
-                  <div className="flex justify-between text-sm">
-                    <span className="text-slate-600">Dust Extractor:</span>
-                    <span className={`font-medium ${product.dustExtractor ? 'text-green-600' : 'text-slate-500'}`}>
-                      {product.dustExtractor ? 'Built-in' : 'Separate'}
-                    </span>
-                  </div>
-                  <div className="flex justify-between text-sm font-medium text-blue-900">
-                    <span>Price:</span>
-                    <span>{product.price}</span>
+              {/* Specs - Versus.com Style */}
+              <div className="p-6 space-y-4">
+                {/* Performance */}
+                <div>
+                  <h4 className="text-sm font-semibold text-slate-700 mb-2">Performance</h4>
+                  <div className="grid grid-cols-2 gap-2 text-sm">
+                    {product.torque && (
+                      <div className="flex justify-between">
+                        <span className="text-slate-600">Torque</span>
+                        <span className={`font-medium ${
+                          parseFloat(product.torque) >= 4.5 ? 'text-green-600' : 
+                          parseFloat(product.torque) >= 4.0 ? 'text-blue-600' : 
+                          'text-slate-600'
+                        }`}>{product.torque}</span>
+                      </div>
+                    )}
+                    {product.rpm && (
+                      <div className="flex justify-between">
+                        <span className="text-slate-600">RPM</span>
+                        <span className={`font-medium ${
+                          parseInt(product.rpm.replace(',', '')) >= 30000 ? 'text-green-600' : 
+                          parseInt(product.rpm.replace(',', '')) >= 25000 ? 'text-blue-600' : 
+                          'text-slate-600'
+                        }`}>{product.rpm}</span>
+                      </div>
+                    )}
+                    {product.power && (
+                      <div className="flex justify-between">
+                        <span className="text-slate-600">Power</span>
+                        <span className={`font-medium ${
+                          parseInt(product.power.replace('W', '')) >= 45 ? 'text-green-600' : 
+                          parseInt(product.power.replace('W', '')) >= 35 ? 'text-blue-600' : 
+                          'text-slate-600'
+                        }`}>{product.power}</span>
+                      </div>
+                    )}
+                    {product.suction && (
+                      <div className="flex justify-between">
+                        <span className="text-slate-600">Suction</span>
+                        <span className="font-medium">{product.suction}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
 
-                <div className="space-y-2 mb-4">
+                {/* Design */}
+                <div>
+                  <h4 className="text-sm font-semibold text-slate-700 mb-2">Design</h4>
+                  <div className="grid grid-cols-2 gap-2 text-sm">
+                    {product.noise && (
+                      <div className="flex justify-between">
+                        <span className="text-slate-600">Noise</span>
+                        <span className="font-medium">{product.noise}</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between">
+                      <span className="text-slate-600">Dust Extractor</span>
+                      <span className={`font-medium ${product.dustExtractor ? 'text-green-600' : 'text-slate-500'}`}>
+                        {product.dustExtractor ? 'Built-in' : 'Separate'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Price */}
+                <div className="flex justify-between items-center pt-2 border-t border-slate-100">
+                  <span className="text-sm text-slate-600">Price</span>
+                  <span className="font-semibold text-blue-900">{product.price}</span>
+                </div>
+
+                {/* Pros/Cons */}
+                <div className="space-y-2">
                   <div className="text-sm">
                     <span className="text-green-600">✓</span>
                     <span className="ml-1 text-slate-600">{product.pros.slice(0, 2).join(', ')}</span>
@@ -440,6 +474,7 @@ export default function ComparePage() {
                   </div>
                 </div>
 
+                {/* CTA */}
                 <a 
                   href={product.cohealUrl}
                   target="_blank"
