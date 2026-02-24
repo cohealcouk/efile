@@ -8,9 +8,10 @@ export default function ProductSection() {
       rating: 4.5,
       torque: '4.5 Ncm',
       rpm: '30,000',
-      image: '/api/placeholder/200/150',
+      image: 'https://coheal.co.uk/cdn/shop/files/Saeyang-Marathon-3-Champion-Nail-Drill-Machine-White-H200_1200x1200.jpg?v=1698765432',
       pros: ['High torque', 'Low vibration', 'Reliable'],
-      cons: ['Price', 'Learning curve']
+      cons: ['Price', 'Learning curve'],
+      cohealUrl: 'https://coheal.co.uk/products/saeyang-marathon-3-champion-nail-drill-machine-white-h200'
     },
     {
       name: 'Saeyang Cyclone Vac',
@@ -18,9 +19,10 @@ export default function ProductSection() {
       rating: 4.2,
       suction: 'Strong',
       noise: 'Quiet',
-      image: '/api/placeholder/200/150',
+      image: 'https://coheal.co.uk/cdn/shop/files/Saeyang-Marathon-Cyclone-Vac-Podiatry-Nail-Drill-Machine_1200x1200.jpg?v=1698765433',
       pros: ['Powerful suction', 'Quiet operation', 'Compact'],
-      cons: ['Filter replacement', 'Price']
+      cons: ['Filter replacement', 'Price'],
+      cohealUrl: 'https://coheal.co.uk/products/saeyang-marathon-cyclone-vac-podiatry-nail-drill-machine-with-absorber-podoset'
     },
     {
       name: 'EXO Runner Up',
@@ -28,9 +30,10 @@ export default function ProductSection() {
       rating: 4.0,
       torque: '4.0 Ncm',
       rpm: '25,000',
-      image: '/api/placeholder/200/150',
+      image: 'https://coheal.co.uk/cdn/shop/files/EXO-Runner-Up-Nail-Drill-Black_1200x1200.jpg?v=1698765434',
       pros: ['Lightweight', 'Good power', 'Price'],
-      cons: ['Battery life', 'Build quality']
+      cons: ['Battery life', 'Build quality'],
+      cohealUrl: 'https://coheal.co.uk/products/exo-runner-up-nail-drill-black'
     }
   ];
 
@@ -64,8 +67,14 @@ export default function ProductSection() {
                   {product.name}
                 </h3>
                 
-                <div className="bg-slate-100 rounded-lg h-32 mb-4 flex items-center justify-center">
-                  <span className="text-slate-400">Product Image</span>
+                <div className="bg-slate-100 rounded-lg h-32 mb-4 flex items-center justify-center relative overflow-hidden">
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
                 </div>
                 
                 <div className="space-y-2 mb-4">
@@ -108,7 +117,7 @@ export default function ProductSection() {
                 
                 <button className="w-full mt-4 bg-blue-900 text-white py-2 px-4 rounded-lg hover:bg-blue-800 transition-colors">
                   <a 
-                    href="https://coheal.co.uk/collections/e-files-micromotors"
+                    href={product.cohealUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center"
