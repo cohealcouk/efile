@@ -21,6 +21,7 @@ interface Product {
 
 export default function ComparePage() {
   const [rpmFilter, setRpmFilter] = useState<string>('all');
+  const [torqueFilter, setTorqueFilter] = useState<string>('all');
   const [powerFilter, setPowerFilter] = useState<string>('all');
   const [dustFilter, setDustFilter] = useState<string>('all');
 
@@ -52,6 +53,20 @@ export default function ComparePage() {
       image: 'https://coheal.co.uk/cdn/shop/files/Saeyang-Marathon-3-Champion-Nail-Drill-Machine-White-H200_1200x1200.jpg?v=1698765432',
       pros: ['High torque', 'Quick release', 'Enhanced grip', 'Professional'],
       cons: ['Higher price', 'Complex']
+    },
+    {
+      name: 'Saeyang Marathon 3 + H35LSP',
+      category: 'Professional E-File',
+      rating: 4.4,
+      torque: '4.2 Ncm',
+      rpm: '28,000',
+      power: '45W',
+      dustExtractor: false,
+      price: '£299.99',
+      cohealUrl: 'https://coheal.co.uk/products/saeyang-marathon-3-champion-nail-drill-machine-white-h35lsp-gray',
+      image: 'https://coheal.co.uk/cdn/shop/files/Saeyang-Marathon-3-Champion-Nail-Drill-Machine-White-H200_1200x1200.jpg?v=1698765432',
+      pros: ['High torque', 'Standard grip', 'Reliable', 'Good value'],
+      cons: ['Manual bur change', 'Basic features']
     },
     {
       name: 'Saeyang Marathon Cyclone Vac',
@@ -111,23 +126,45 @@ export default function ComparePage() {
       image: 'https://coheal.co.uk/cdn/shop/files/Saeyang-Marathon-3-Champion-Nail-Drill-Machine-White-H200_1200x1200.jpg?v=1698765432',
       pros: ['Portable', 'Brushless', 'Good torque', 'Professional'],
       cons: ['Price', 'Battery not included', 'Complex']
+    },
+    {
+      name: 'Saeyang Marathon K35 Mini',
+      category: 'Professional E-File',
+      rating: 4.2,
+      torque: '4.0 Ncm',
+      rpm: '25,000',
+      power: '35W',
+      dustExtractor: false,
+      price: '£259.99',
+      cohealUrl: 'https://coheal.co.uk/products/saeyang-nail-drill-machine-marathon-k35-mini-white-h200',
+      image: 'https://coheal.co.uk/cdn/shop/files/Saeyang-Marathon-3-Champion-Nail-Drill-Machine-White-H200_1200x1200.jpg?v=1698765432',
+      pros: ['Compact', 'Lightweight', 'Good torque', 'Portable'],
+      cons: ['Lower RPM', 'Basic features', 'Limited power']
     }
   ];
 
   const filteredProducts = products.filter(product => {
     const rpmMatch = rpmFilter === 'all' || 
-      (rpmFilter === '20000-25000' && product.rpm === '25,000') ||
-      (rpmFilter === '28000-30000' && (product.rpm === '28,000' || product.rpm === '30,000'));
+      (rpmFilter === '0-20000' && product.rpm === '20,000') ||
+      (rpmFilter === '20001-25000' && product.rpm === '25,000') ||
+      (rpmFilter === '25001-30000' && (product.rpm === '28,000' || product.rpm === '30,000'));
+
+    const torqueMatch = torqueFilter === 'all' || 
+      (torqueFilter === '3.5-3.9' && (product.torque === '3.5 Ncm' || product.torque === '4.0 Ncm')) ||
+      (torqueFilter === '4.0-4.4' && (product.torque === '4.0 Ncm' || product.torque === '4.2 Ncm' || product.torque === '4.3 Ncm')) ||
+      (torqueFilter === '4.5+' && product.torque === '4.5 Ncm');
 
     const powerMatch = powerFilter === 'all' || 
-      (powerFilter === '30-35W' && product.power === '30W' || product.power === '35W') ||
-      (powerFilter === '40-45W' && (product.power === '40W' || product.power === '45W'));
+      (powerFilter === '30W' && product.power === '30W') ||
+      (powerFilter === '35W' && product.power === '35W') ||
+      (powerFilter === '40W' && product.power === '40W') ||
+      (powerFilter === '45W' && product.power === '45W');
 
     const dustMatch = dustFilter === 'all' || 
       (dustFilter === 'with-extractor' && product.dustExtractor) ||
       (dustFilter === 'without-extractor' && !product.dustExtractor);
 
-    return rpmMatch && powerMatch && dustMatch;
+    return rpmMatch && torqueMatch && powerMatch && dustMatch;
   });
 
   return (
@@ -144,7 +181,7 @@ export default function ComparePage() {
 
         {/* Filters */}
         <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
                 RPM Range
@@ -154,9 +191,26 @@ export default function ComparePage() {
                 onChange={(e) => setRpmFilter(e.target.value)}
                 className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="all">All RPM</option>
-                <option value="20000-25000">20,000 - 25,000 RPM</option>
-                <option value="28000-30000">28,000 - 30,000 RPM</option>
+                <option value="all">All RPM (0-40,000)</option>
+                <option value="0-20000">0-20,000 RPM</option>
+                <option value="20001-25000">20,001-25,000 RPM</option>
+                <option value="25001-30000">25,001-30,000 RPM</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">
+                Torque Range
+              </label>
+              <select 
+                value={torqueFilter} 
+                onChange={(e) => setTorqueFilter(e.target.value)}
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="all">All Torque</option>
+                <option value="3.5-3.9">3.5-3.9 Ncm</option>
+                <option value="4.0-4.4">4.0-4.4 Ncm</option>
+                <option value="4.5+">4.5+ Ncm</option>
               </select>
             </div>
 
@@ -170,8 +224,10 @@ export default function ComparePage() {
                 className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="all">All Power</option>
-                <option value="30-35W">30-35W</option>
-                <option value="40-45W">40-45W</option>
+                <option value="30W">30W</option>
+                <option value="35W">35W</option>
+                <option value="40W">40W</option>
+                <option value="45W">45W</option>
               </select>
             </div>
 
