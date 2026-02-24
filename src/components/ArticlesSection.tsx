@@ -76,12 +76,22 @@ export default function ArticlesSection() {
                     })}
                   </time>
                   
-                  <a 
-                    href={`/reviews/${article.slug}`}
-                    className="text-blue-900 hover:text-blue-700 font-medium text-sm"
-                  >
-                    Read More →
-                  </a>
+                  <div className="flex items-center gap-2">
+                    <a 
+                      href={`/reviews/${article.slug}`}
+                      className="text-blue-900 hover:text-blue-700 font-medium text-sm"
+                    >
+                      Read More →
+                    </a>
+                    <a 
+                      href="https://coheal.co.uk/collections/e-files-micromotors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-green-600 hover:text-green-700 font-medium text-sm"
+                    >
+                      Shop →
+                    </a>
+                  </div>
                 </div>
               </div>
             </article>

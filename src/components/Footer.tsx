@@ -91,8 +91,40 @@ export default function Footer() {
           </div>
         </div>
         
-        <div className="border-t border-slate-800 mt-8 pt-8 text-center text-sm text-slate-400">
-          <p>&copy; 2024 E-File Reviews. Professional equipment analysis for UK nail technicians.</p>
+        <div className="border-t border-slate-800 mt-8 pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <p className="text-sm text-slate-400 mb-4 md:mb-0">
+              &copy; 2024 E-File Reviews. Professional equipment analysis for UK nail technicians.
+            </p>
+            <div className="flex items-center gap-4">
+              <a 
+                href="https://coheal.co.uk"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors"
+              >
+                Shop at Coheal UK
+              </a>
+              <span className="text-slate-600 text-sm">|</span>
+              <a 
+                href="https://coheal.co.uk/collections/e-files-micromotors"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors"
+              >
+                E-Files
+              </a>
+              <span className="text-slate-600 text-sm">|</span>
+              <a 
+                href="https://coheal.co.uk/collections/dust-extractors-ventilation"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors"
+              >
+                Dust Extractors
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

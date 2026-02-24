@@ -107,7 +107,17 @@ export default function ProductSection() {
                 </div>
                 
                 <button className="w-full mt-4 bg-blue-900 text-white py-2 px-4 rounded-lg hover:bg-blue-800 transition-colors">
-                  View Full Review
+                  <a 
+                    href="https://coheal.co.uk/collections/e-files-micromotors"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center"
+                  >
+                    Check Availability at Coheal UK
+                    <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </a>
                 </button>
               </div>
             </div>

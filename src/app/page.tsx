@@ -1,6 +1,7 @@
 import Header from '@/components/Header';
 import ProductSection from '@/components/ProductSection';
 import ArticlesSection from '@/components/ArticlesSection';
+import BuyingGuide from '@/components/BuyingGuide';
 import Footer from '@/components/Footer';
 
 export default function Home() {
@@ -42,6 +43,7 @@ export default function Home() {
 
       <ProductSection />
       <ArticlesSection />
+      <BuyingGuide />
       <Footer />
     </div>
   );
