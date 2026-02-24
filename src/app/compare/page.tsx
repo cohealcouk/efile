@@ -179,6 +179,113 @@ export default function ComparePage() {
           </p>
         </div>
 
+        {/* Benchmark Comparison Table */}
+        <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6 mb-8 overflow-x-auto">
+          <h2 className="text-2xl font-semibold text-slate-900 mb-6">Benchmark Comparison</h2>
+          <div className="min-w-full">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-slate-200">
+                  <th className="text-left py-3 px-4 font-semibold text-slate-900">Model</th>
+                  <th className="text-center py-3 px-4 font-semibold text-slate-900">Rating</th>
+                  <th className="text-center py-3 px-4 font-semibold text-slate-900">Torque</th>
+                  <th className="text-center py-3 px-4 font-semibold text-slate-900">RPM</th>
+                  <th className="text-center py-3 px-4 font-semibold text-slate-900">Power</th>
+                  <th className="text-center py-3 px-4 font-semibold text-slate-900">Dust Extractor</th>
+                  <th className="text-center py-3 px-4 font-semibold text-slate-900">Price</th>
+                  <th className="text-center py-3 px-4 font-semibold text-slate-900">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {products.map((product, index) => (
+                  <tr key={index} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                    <td className="py-3 px-4">
+                      <div>
+                        <div className="font-medium text-slate-900">{product.name}</div>
+                        <div className="text-xs text-slate-500">{product.category}</div>
+                      </div>
+                    </td>
+                    <td className="text-center py-3 px-4">
+                      <div className="flex items-center justify-center">
+                        <span className="text-yellow-500">★</span>
+                        <span className="ml-1 font-semibold">{product.rating}</span>
+                      </div>
+                    </td>
+                    <td className="text-center py-3 px-4">
+                      <span className={`font-medium ${
+                        parseFloat(product.torque || '0') >= 4.5 ? 'text-green-600' : 
+                        parseFloat(product.torque || '0') >= 4.0 ? 'text-blue-600' : 
+                        'text-slate-600'
+                      }`}>
+                        {product.torque || 'N/A'}
+                      </span>
+                    </td>
+                    <td className="text-center py-3 px-4">
+                      <span className={`font-medium ${
+                        parseInt(product.rpm?.replace(',', '') || '0') >= 30000 ? 'text-green-600' : 
+                        parseInt(product.rpm?.replace(',', '') || '0') >= 25000 ? 'text-blue-600' : 
+                        'text-slate-600'
+                      }`}>
+                        {product.rpm || 'N/A'}
+                      </span>
+                    </td>
+                    <td className="text-center py-3 px-4">
+                      <span className={`font-medium ${
+                        parseInt(product.power?.replace('W', '') || '0') >= 45 ? 'text-green-600' : 
+                        parseInt(product.power?.replace('W', '') || '0') >= 35 ? 'text-blue-600' : 
+                        'text-slate-600'
+                      }`}>
+                        {product.power || 'N/A'}
+                      </span>
+                    </td>
+                    <td className="text-center py-3 px-4">
+                      <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                        product.dustExtractor ? 'bg-green-100 text-green-800' : 'bg-slate-100 text-slate-600'
+                      }`}>
+                        {product.dustExtractor ? 'Built-in' : 'Separate'}
+                      </span>
+                    </td>
+                    <td className="text-center py-3 px-4">
+                      <span className="font-semibold text-blue-900">{product.price}</span>
+                    </td>
+                    <td className="text-center py-3 px-4">
+                      <a 
+                        href={product.cohealUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium"
+                      >
+                        View
+                        <svg className="ml-1 w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                      </a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          
+          {/* Legend */}
+          <div className="mt-4 pt-4 border-t border-slate-200">
+            <div className="flex flex-wrap gap-4 text-xs">
+              <div className="flex items-center">
+                <div className="w-3 h-3 bg-green-600 rounded mr-2"></div>
+                <span className="text-slate-600">Excellent (≥4.5 Ncm, ≥30,000 RPM, ≥45W)</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-3 h-3 bg-blue-600 rounded mr-2"></div>
+                <span className="text-slate-600">Good (≥4.0 Ncm, ≥25,000 RPM, ≥35W)</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-3 h-3 bg-slate-600 rounded mr-2"></div>
+                <span className="text-slate-600">Standard</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Filters */}
         <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6 mb-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
