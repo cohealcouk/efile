@@ -10,10 +10,22 @@ export default function Header() {
     <header className="bg-white shadow-sm border-b border-slate-200">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          <Link href="/" className="text-xl font-bold text-blue-900">
+          {/* Mobile Menu Button - Left Side */}
+          <button
+            className="md:hidden p-2 rounded-lg hover:bg-slate-100"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+
+          {/* Logo - Center on Mobile, Left on Desktop */}
+          <Link href="/" className="text-xl font-bold text-blue-900 md:mr-auto">
             E-File Reviews
           </Link>
           
+          {/* Desktop Navigation - Hidden on Mobile */}
           <nav className="hidden md:flex space-x-8">
             <Link href="/" className="text-slate-600 hover:text-blue-900 transition-colors">
               Home
@@ -29,18 +41,13 @@ export default function Header() {
             </Link>
           </nav>
 
-          <button
-            className="md:hidden p-2 rounded-lg hover:bg-slate-100"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
+          {/* Empty Space on Mobile for Balance */}
+          <div className="md:hidden w-10"></div>
         </div>
 
+        {/* Mobile Menu - Slide from Left */}
         {isMenuOpen && (
-          <nav className="md:hidden py-4 border-t border-slate-200">
+          <nav className="md:hidden py-4 border-t border-slate-200 bg-white">
             <Link href="/" className="block py-2 text-slate-600 hover:text-blue-900">
               Home
             </Link>
