@@ -24,6 +24,62 @@ export default function ComparePage() {
   const [torqueFilter, setTorqueFilter] = useState<string>('all');
   const [powerFilter, setPowerFilter] = useState<string>('all');
   const [dustFilter, setDustFilter] = useState<string>('all');
+  const [sortColumn, setSortColumn] = useState<string>('rating');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
+
+  const handleSort = (column: string) => {
+    if (sortColumn === column) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortColumn(column);
+      setSortDirection('desc');
+    }
+  };
+
+  const getSortedProducts = (productsToSort: Product[]) => {
+    return [...productsToSort].sort((a, b) => {
+      let aValue: any;
+      let bValue: any;
+
+      switch (sortColumn) {
+        case 'name':
+          aValue = a.name.toLowerCase();
+          bValue = b.name.toLowerCase();
+          break;
+        case 'rating':
+          aValue = a.rating;
+          bValue = b.rating;
+          break;
+        case 'torque':
+          aValue = parseFloat(a.torque || '0');
+          bValue = parseFloat(b.torque || '0');
+          break;
+        case 'rpm':
+          aValue = parseInt(a.rpm?.replace(',', '') || '0');
+          bValue = parseInt(b.rpm?.replace(',', '') || '0');
+          break;
+        case 'power':
+          aValue = parseInt(a.power?.replace('W', '') || '0');
+          bValue = parseInt(b.power?.replace('W', '') || '0');
+          break;
+        case 'price':
+          aValue = parseFloat(a.price.replace('£', '').replace(',', ''));
+          bValue = parseFloat(b.price.replace('£', '').replace(',', ''));
+          break;
+        default:
+          aValue = a.name.toLowerCase();
+          bValue = b.name.toLowerCase();
+      }
+
+      if (typeof aValue === 'string') {
+        return sortDirection === 'asc' 
+          ? aValue.localeCompare(bValue)
+          : bValue.localeCompare(aValue);
+      }
+
+      return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
+    });
+  };
 
   const products: Product[] = [
     {
@@ -143,29 +199,29 @@ export default function ComparePage() {
     }
   ];
 
-  const filteredProducts = products.filter(product => {
-    const rpmMatch = rpmFilter === 'all' || 
-      (rpmFilter === '0-20000' && product.rpm === '20,000') ||
-      (rpmFilter === '20001-25000' && product.rpm === '25,000') ||
-      (rpmFilter === '25001-30000' && (product.rpm === '28,000' || product.rpm === '30,000'));
-
-    const torqueMatch = torqueFilter === 'all' || 
-      (torqueFilter === '3.5-3.9' && (product.torque === '3.5 Ncm' || product.torque === '4.0 Ncm')) ||
-      (torqueFilter === '4.0-4.4' && (product.torque === '4.0 Ncm' || product.torque === '4.2 Ncm' || product.torque === '4.3 Ncm')) ||
-      (torqueFilter === '4.5+' && product.torque === '4.5 Ncm');
-
-    const powerMatch = powerFilter === 'all' || 
-      (powerFilter === '30W' && product.power === '30W') ||
-      (powerFilter === '35W' && product.power === '35W') ||
-      (powerFilter === '40W' && product.power === '40W') ||
-      (powerFilter === '45W' && product.power === '45W');
-
-    const dustMatch = dustFilter === 'all' || 
-      (dustFilter === 'with-extractor' && product.dustExtractor) ||
-      (dustFilter === 'without-extractor' && !product.dustExtractor);
-
-    return rpmMatch && torqueMatch && powerMatch && dustMatch;
-  });
+  const filteredProducts = getSortedProducts(
+    products.filter(product => {
+      const rpmMatch = rpmFilter === 'all' || 
+        (rpmFilter === '0-20000' && parseInt(product.rpm?.replace(',', '') || '0') <= 20000) ||
+        (rpmFilter === '20000-30000' && parseInt(product.rpm?.replace(',', '') || '0') > 20000 && parseInt(product.rpm?.replace(',', '') || '0') <= 30000) ||
+        (rpmFilter === '30000+' && parseInt(product.rpm?.replace(',', '') || '0') > 30000);
+      
+      const torqueMatch = torqueFilter === 'all' || 
+        (torqueFilter === '0-3.5' && parseFloat(product.torque || '0') <= 3.5) ||
+        (torqueFilter === '3.5-4.0' && parseFloat(product.torque || '0') > 3.5 && parseFloat(product.torque || '0') <= 4.0) ||
+        (torqueFilter === '4.0+' && parseFloat(product.torque || '0') > 4.0);
+      
+      const powerMatch = powerFilter === 'all' || 
+        (powerFilter === '0-35W' && parseInt(product.power?.replace('W', '') || '0') <= 35) ||
+        (powerFilter === '35W+' && parseInt(product.power?.replace('W', '') || '0') > 35);
+      
+      const dustMatch = dustFilter === 'all' || 
+        (dustFilter === 'yes' && product.dustExtractor) ||
+        (dustFilter === 'no' && !product.dustExtractor);
+      
+      return rpmMatch && torqueMatch && powerMatch && dustMatch;
+    })
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-100">
@@ -186,18 +242,94 @@ export default function ComparePage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-slate-200">
-                  <th className="text-left py-3 px-4 font-semibold text-slate-900">Model</th>
-                  <th className="text-center py-3 px-4 font-semibold text-slate-900">Rating</th>
-                  <th className="text-center py-3 px-4 font-semibold text-slate-900">Torque</th>
-                  <th className="text-center py-3 px-4 font-semibold text-slate-900">RPM</th>
-                  <th className="text-center py-3 px-4 font-semibold text-slate-900">Power</th>
-                  <th className="text-center py-3 px-4 font-semibold text-slate-900">Dust Extractor</th>
-                  <th className="text-center py-3 px-4 font-semibold text-slate-900">Price</th>
-                  <th className="text-center py-3 px-4 font-semibold text-slate-900">Action</th>
+                  <th 
+                    className="text-left py-3 px-4 font-semibold text-slate-900 cursor-pointer hover:bg-slate-50 transition-colors"
+                    onClick={() => handleSort('name')}
+                  >
+                    <div className="flex items-center">
+                      Model
+                      {sortColumn === 'name' && (
+                        <span className="ml-2 text-blue-600">
+                          {sortDirection === 'asc' ? '↑' : '↓'}
+                        </span>
+                      )}
+                    </div>
+                  </th>
+                  <th 
+                    className="text-center py-3 px-4 font-semibold text-slate-900 cursor-pointer hover:bg-slate-50 transition-colors"
+                    onClick={() => handleSort('rating')}
+                  >
+                    <div className="flex items-center justify-center">
+                      Rating
+                      {sortColumn === 'rating' && (
+                        <span className="ml-2 text-blue-600">
+                          {sortDirection === 'asc' ? '↑' : '↓'}
+                        </span>
+                      )}
+                    </div>
+                  </th>
+                  <th 
+                    className="text-center py-3 px-4 font-semibold text-slate-900 cursor-pointer hover:bg-slate-50 transition-colors"
+                    onClick={() => handleSort('torque')}
+                  >
+                    <div className="flex items-center justify-center">
+                      Torque
+                      {sortColumn === 'torque' && (
+                        <span className="ml-2 text-blue-600">
+                          {sortDirection === 'asc' ? '↑' : '↓'}
+                        </span>
+                      )}
+                    </div>
+                  </th>
+                  <th 
+                    className="text-center py-3 px-4 font-semibold text-slate-900 cursor-pointer hover:bg-slate-50 transition-colors"
+                    onClick={() => handleSort('rpm')}
+                  >
+                    <div className="flex items-center justify-center">
+                      RPM
+                      {sortColumn === 'rpm' && (
+                        <span className="ml-2 text-blue-600">
+                          {sortDirection === 'asc' ? '↑' : '↓'}
+                        </span>
+                      )}
+                    </div>
+                  </th>
+                  <th 
+                    className="text-center py-3 px-4 font-semibold text-slate-900 cursor-pointer hover:bg-slate-50 transition-colors"
+                    onClick={() => handleSort('power')}
+                  >
+                    <div className="flex items-center justify-center">
+                      Power
+                      {sortColumn === 'power' && (
+                        <span className="ml-2 text-blue-600">
+                          {sortDirection === 'asc' ? '↑' : '↓'}
+                        </span>
+                      )}
+                    </div>
+                  </th>
+                  <th className="text-center py-3 px-4 font-semibold text-slate-900">
+                    Dust Extractor
+                  </th>
+                  <th 
+                    className="text-center py-3 px-4 font-semibold text-slate-900 cursor-pointer hover:bg-slate-50 transition-colors"
+                    onClick={() => handleSort('price')}
+                  >
+                    <div className="flex items-center justify-center">
+                      Price
+                      {sortColumn === 'price' && (
+                        <span className="ml-2 text-blue-600">
+                          {sortDirection === 'asc' ? '↑' : '↓'}
+                        </span>
+                      )}
+                    </div>
+                  </th>
+                  <th className="text-center py-3 px-4 font-semibold text-slate-900">
+                    Action
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {products.map((product, index) => (
+                {getSortedProducts(products).map((product, index) => (
                   <tr key={index} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
                     <td className="py-3 px-4">
                       <div>
